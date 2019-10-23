@@ -1,10 +1,18 @@
 import axios from "axios"
 import { useRouter } from 'next/router';
 import btoa from 'btoa'
+import DiscordContext from '../components/DiscordContext';
+import React, { useEffect, useContext } from 'react'
 
-const Login = () => {
+const Login = ({ query }) => {
 
+  const { signIn } = useContext(DiscordContext)
 
+  useEffect(() => {
+    if (query.code) {
+      signIn(query.code)
+    }
+  })
   return (
     <>
       <div className="max-w-xs mx-auto mt-64 border border-solid border-black p-4 bg-gray-700 flex flex-center flex-col rounded-lg">
@@ -22,19 +30,8 @@ const Login = () => {
   )
 }
 
-Login.getInitialProps = async ({ query, req }) => {
-  if (query.code) {
-    const creds = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`)
-    const response = await axios({
-      method: 'post',
-      baseURL: `https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${query.code}`,
-      headers: {
-        Authorization: `Basic ${creds}`
-      }
-     })
-  }
-
-  return "works"
+Login.getInitialProps = async ({ query }) => {
+  return { query }
 }
 
 export default Login

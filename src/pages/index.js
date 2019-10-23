@@ -6,6 +6,9 @@ import { useContext } from 'react'
 const Index = ({ name }) => {
     const { user } = useContext(DiscordContext)
 
+    if (user == null )
+        return <h1>loading...</h1>
+    
     return (
         <div className="bg-gray-500">
             <Link href="/about" >
@@ -14,7 +17,7 @@ const Index = ({ name }) => {
             <Link href="/login" >
                 <a title="login">login page</a>
             </Link>
-            <p className="text-2xl text-red-500">Hello world { name } and { user } </p>
+            <p className="text-2xl text-red-500">Hello world { name } and { user.access_token } </p>
         </div>
     )
 };
