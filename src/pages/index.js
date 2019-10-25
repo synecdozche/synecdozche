@@ -1,32 +1,46 @@
 import Link from "next/link";
-import axios from "axios";
-import DiscordContext from '../components/DiscordContext'
-import { useContext } from 'react'
+import Api from "../components/DiscordApi";
+import DiscordContext from '../components/DiscordContext';
+import { useContext, useState, useEffect }  from 'react';
 
-const Index = ({ name }) => {
+const Index = () => {
     const { user } = useContext(DiscordContext)
+    const [userData, setUserData] = useState(null)
 
-    if (user == null )
+    useEffect(() => {
+        async function fetchData() {
+            if (user !== null) {
+                const res = await Api(user.access_token).get('/users/@me')
+                setUserData(res.data)
+            }
+        }
+        fetchData();
+    }, [user])
+
+    if (userData === null) 
         return <h1>loading...</h1>
-    
+
     return (
-        <div className="bg-gray-500">
-            <Link href="/about" >
-                <a title="about page">About Page</a>
+    <>
+        <nav className="flex p-1">
+            <Link href="/about">
+                <a className="mr-2 font-mono" title="about page">About</a>
             </Link>
-            <Link href="/login" >
-                <a title="login">login page</a>
+            <span class="font-mono mr-2">/</span>
+            <Link href="/login">
+                <a className="font-mono" title="login">Login</a>
             </Link>
-            <p className="text-2xl text-red-500">Hello world { name } and { user.access_token } </p>
-        </div>
+        </nav>
+
+        <article className="">
+            <div className="h-30 bg-gray-800 flex justify-center max-w-xs mx-auto p-2 mt-40 rounded-lg">
+                <img class="h-20 w-20 rounded-full" src={`https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`} />
+                <h2 class="ml-2 self-center font-mono font-bold text-2xl text-white">Hello, {userData.username}#{userData.discriminator}</h2>
+            </div>
+        </article>
+    </>
     )
 };
 
-Index.getInitialProps = async () => {
-    const res = await axios.get('http://localhost:3000/api/test');
-    const { data } = res;
-
-    return data
-}
 
 export default Index

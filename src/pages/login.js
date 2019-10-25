@@ -1,21 +1,26 @@
 import axios from "axios"
-import { useRouter } from 'next/router';
+import { useRouter, Router } from 'next/router';
 import btoa from 'btoa'
 import DiscordContext from '../components/DiscordContext';
 import React, { useEffect, useContext } from 'react'
 
 const Login = ({ query }) => {
-
-  const { signIn } = useContext(DiscordContext)
-
+  const router = useRouter();
+  const { user, signIn } = useContext(DiscordContext)
+  
   useEffect(() => {
     if (query.code) {
       signIn(query.code)
     }
   })
+
+  if (user !== null) {
+    router.push('/')
+  }
+  
   return (
     <>
-      <div className="max-w-xs mx-auto mt-64 border border-solid border-black p-4 bg-gray-700 flex flex-center flex-col rounded-lg">
+      <div className="max-w-xs mx-auto mt-64 border border-solid border-black p-4 bg-gray-800 flex flex-center flex-col rounded-lg">
         <p className="text-2xl font-bold mt-4 text-white text-center">Continue with</p>
         <div className="rounded-lg bg-gray-200 w-48 mx-auto mb-6">
           <a href={`https://discordapp.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&scope=identify&response_type=code`}>
