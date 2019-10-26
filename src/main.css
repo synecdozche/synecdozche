@@ -6,7 +6,8 @@
 /* purgecss end ignore */
 @tailwind components;
 @tailwind utilities;
-
+/* purgecss start ignore */
 body {
     @apply  bg-gray-700;
 }
+/* purgecss end ignore */

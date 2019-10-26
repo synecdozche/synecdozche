@@ -1,0 +1,10 @@
+{
+    "build": {
+        "env": {
+            "CLIENT_ID": "@client-id",
+            "CLIENT_SECRET": "@client-secret",
+            "REDIRECT_DEV": "@redirect-dev",
+            "REDIRECT_PROD": "@redirect-prod"
+        }
+    }
+}

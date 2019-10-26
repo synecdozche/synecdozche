@@ -1,19 +1,11 @@
 require('dotenv').config()
 const withCSS = require('@zeit/next-css')
-const Dotenv = require('dotenv-webpack')
-const path = require('path')
 
 module.exports = withCSS({
-    webpack: config => {
-        config.plugins = config.plugins || []
-
-        config.plugins = [
-            ...config.plugins,
-            new Dotenv({
-                path: path.join(__dirname, '.env'),
-                systemvars: true
-            })
-        ]
-        return config
-    }
+      env: {
+        CLIENT_ID: process.env.CLIENT_ID,
+        CLIENT_SECRET: process.env.CLIENT_SECRET,
+        REDIRECT_DEV: process.env.REDIRECT_DEV,
+        REDIRECT_PROD: process.env.REDIRECT_PROD
+      }
 })

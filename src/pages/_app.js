@@ -22,12 +22,20 @@ class MyApp extends App {
             Router.push('/login')
         }
     }
-
+    signOut = () => {
+        localStorage.clear();
+        this.setState({
+            user: null
+        }, () => Router.push('/login'))
+        
+    }
     signIn = async (code) => {
         const creds = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`)
+        const redirect = (process.env.NODE_ENV === "production" ? process.env.REDIRECT_PROD : process.env.REDIRECT_DEV)
+
         const res = await axios({
           method: 'post',
-          baseURL: `https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}`,
+          baseURL: `https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}`,
           headers: {
             Authorization: `Basic ${creds}`
           }
@@ -49,7 +57,7 @@ class MyApp extends App {
         const { Component, pageProps } = this.props
 
         return (
-            <DiscordContext.Provider value={{ user: this.state.user, signIn: this.signIn }}>
+            <DiscordContext.Provider value={{ user: this.state.user, signIn: this.signIn, signOut: this.signOut }}>
                 <Component {...pageProps} />
             </DiscordContext.Provider>
         )
