@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Api from "../components/DiscordApi";
 import DiscordContext from '../components/DiscordContext';
+import DuolingoCard from '../components/DuolingoCard';
 import { useContext, useState, useEffect }  from 'react';
 
 const Index = () => {
@@ -34,12 +35,13 @@ const Index = () => {
             <a className="font-mono cursor-pointer text-indigo-300" onClick={() => signOut()}>Logout</a>
         </nav>
 
-        <article className="">
-            <div className="h-30 bg-gray-800 flex justify-center max-w-xs mx-auto p-2 mt-40 rounded-lg">
+        <main className="max-w-3xl mt-24 mx-auto flex flex-center">
+            <section className=" h-24 bg-gray-800 flex m-4 flex-initial w-64 justify-center p-2 rounded-lg">
                 <img className="h-20 w-20 rounded-full" src={`https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`} />
-                <h2 className="ml-2 self-center font-mono font-bold text-2xl text-white">Hello, {userData.username}#{userData.discriminator}</h2>
-            </div>
-        </article>
+                <h2 className="ml-2 self-center font-mono font-bold text-xl text-white">Hello, {userData.username}#{userData.discriminator}</h2>
+            </section>
+            <DuolingoCard />
+        </main>
     </>
     )
 };
